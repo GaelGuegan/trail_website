@@ -1,0 +1,31 @@
+on: push
+name: Deploy
+jobs:
+   deploy:
+      name: deploy
+      runs-on: ubuntu-latest
+      steps:
+         - name: checkout
+           uses: actions/checkout@v4
+           with:
+              submodules: true
+              fetch-depth: 0
+
+         - name: Setup Hugo
+           uses: peaceiris/actions-hugo@v3
+           with:
+              hugo-version: '0.119.0'
+
+         - name: Build
+           run: hugo --minify
+
+         - name: deploy cloud
+           uses: GaelGuegan/actions-file-deployer@1.0
+           with:
+                 remote-protocol: "sftp"
+                 remote-host: "gael.guegan.cloud"
+                 remote-user: "gael"
+                 remote-path: "./apps/hugo/trail/public"
+                 local-path: "./public/"
+                 remote-password: ${{ secrets.ftp_password_my_cloud }}
+                 sync: full
