@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My New Hugo Site</title>
+    <link>https://trail.guegan.cloud/</link>
+    <description>Recent content on My New Hugo Site</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Apr 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://trail.guegan.cloud/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Marathon de Paris</title>
+      <link>https://trail.guegan.cloud/post/marathon_de_paris2/</link>
+      <pubDate>Sat, 10 Apr 2021 00:00:00 +0000</pubDate>
+      <guid>https://trail.guegan.cloud/post/marathon_de_paris2/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Semi Marathon de Paris</title>
+      <link>https://trail.guegan.cloud/post/semi_marathon_de_paris/</link>
+      <pubDate>Sat, 10 Apr 2021 00:00:00 +0000</pubDate>
+      <guid>https://trail.guegan.cloud/post/semi_marathon_de_paris/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ecotrail de Paris</title>
+      <link>https://trail.guegan.cloud/post/ecotrail_de_paris/</link>
+      <pubDate>Mon, 10 Apr 2017 00:00:00 +0000</pubDate>
+      <guid>https://trail.guegan.cloud/post/ecotrail_de_paris/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Marathon de Paris</title>
+      <link>https://trail.guegan.cloud/post/marathon_de_paris/</link>
+      <pubDate>Mon, 10 Apr 2017 00:00:00 +0000</pubDate>
+      <guid>https://trail.guegan.cloud/post/marathon_de_paris/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Trail de Fontromeu</title>
+      <link>https://trail.guegan.cloud/post/trail_de_fontromeu/</link>
+      <pubDate>Mon, 10 Apr 2017 00:00:00 +0000</pubDate>
+      <guid>https://trail.guegan.cloud/post/trail_de_fontromeu/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
