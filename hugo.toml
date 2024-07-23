@@ -12,6 +12,7 @@ distance = 'distances'
 denivele = 'deniveles'
 temps = 'temps'
 type = 'types'
+ville = 'villes'
 
 [menu]
   [[menu.main]]
@@ -28,7 +29,6 @@ type = 'types'
 
 [params]
   color = 'linen'
-  #instagram = 'nan.xiaobei'
   strava = 'gaelguegan'
   avatar = 'iguegankergal@hotmail.fr'
   name = 'Gael GUEGAN'
