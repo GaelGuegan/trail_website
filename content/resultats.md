@@ -1,0 +1,1 @@
+TODO: afficher un tableau récapitulatif de tout les trails et stats

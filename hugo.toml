@@ -1,4 +1,36 @@
 baseURL = 'https://trail.guegan.cloud'
-languageCode = 'en-us'
-title = 'My New Hugo Site'
-theme='hugo-paper'
+languageCode = 'fr'
+DefaultContentLanguage = 'fr'
+title = 'Mes aventures en courses à pied'
+theme = 'hugo-paper'
+
+[taxonomies]
+category = 'categories'
+tag = 'tags'
+series = 'series'
+distance = 'distances'
+denivele = 'deniveles'
+temps = 'temps'
+type = 'types'
+
+[menu]
+  [[menu.main]]
+    identifier = 'resultats'
+    name = 'Resultats'
+    url = '/resultats/'
+    weight = 10
+  [[menu.main]]
+    identifier = 'carte'
+    name = 'Carte'
+    url = '/carte/'
+    weight = 10
+
+
+[params]
+  color = 'linen'
+  #instagram = 'nan.xiaobei'
+  strava = 'gaelguegan'
+  avatar = 'iguegankergal@hotmail.fr'
+  name = 'Gael GUEGAN'
+  bio = 'La douleur est éphémère, la fierté est éternelle ...'
+  monoDarkIcon = true
