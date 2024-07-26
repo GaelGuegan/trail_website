@@ -18,7 +18,7 @@ ville = 'villes'
   [[menu.main]]
     identifier = 'resultats'
     name = 'Resultats'
-    url = '/resultats/'
+    url = '/resultats'
     weight = 10
   [[menu.main]]
     identifier = 'carte'

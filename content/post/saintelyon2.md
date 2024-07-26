@@ -6,5 +6,6 @@ distance = ["78km"]
 denivele = ["2200m"]
 temps = ["8h37"]
 type = ["trail"]
+ville = ["Lyon"]
 description = "La neige, ça glisee ..."
 +++

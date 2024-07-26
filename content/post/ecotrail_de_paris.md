@@ -6,5 +6,6 @@ distance = ["45km"]
 denivele = ["900m"]
 temps = ["4h22"]
 type = ["trail"]
+ville = ["Paris"]
 description = "Le premier trail"
 +++

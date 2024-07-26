@@ -2,6 +2,7 @@
 author = "Gael GUEGAN"
 title = "Trail des passerelles"
 date = "2024-07-14"
+ville = ["Monteynard"]
 distance = ["63km"]
 denivele = ["3100m"]
 temps = ["8h31"]

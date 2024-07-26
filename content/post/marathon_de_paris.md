@@ -10,10 +10,9 @@ ville = ["Paris"]
 description = "Là où tout a commencé"
 +++
 
-
 ### Et l'étincelle naquit
-Je pense que c'est en 2015, l'année où j'ai emmenagé sur Paris avec mon cher ami gabin que l'étincelle se produisit. On logeait ensemble dans les beaux quartiers du 17e arrondissement pour nos études. Un dimanche, on se décide à aller jeter un coup d'oeil à l'arrivée du marathon de Paris après avoir aperçu l'évènement à télé. Après dix petites minutes de marche, on se retrouve plonger dans une ambiance de folie parmi les spectateurs qui encouragent leur proches en train franchir la ligne. Les gens crient, applaudissent, sautent, font du bruit alors que des milliers de coureurs à bout de force défilent devant nous. 
-Alors que je pensais la discipline réservée aux athlètes les plus aguerris, je me rends rapidement compte que le physique des sportifs ressemble plus à celui de nos voisins quà Usain Bolt. Ici un gars avec bien vingt kilos en trop, là un petit vieux qui trottine, à côté un père de famille qui portent ses enfants. Arrivés sur les lieux en milieu d'après midi, nous assistons en fait à la fin du peloton. Mais tous franchissent la ligne en héros.
+Je pense que c'est en 2015, l'année où j'ai emmenagé sur Paris avec mon cher ami gabin que le déclic se produisit... Alors qu'on logeait ensemble dans les beaux quartiers du 17e arrondissement pour nos études, on se décide à aller jeter un coup d'oeil à l'arrivée du marathon de Paris après avoir aperçu l'évènement à télé, un beau dimanche matin. AC'est après dix petites minutes de marche, qu'on se retrouva plonger dans une ambiance de folie parmi les spectateurs qui encouragent leur proches en train franchir la ligne. Les gens crient, applaudissent, sautent, font du bruit alors que des milliers de coureurs à bout de force défilaient devant nous. 
+Alors que je pensais la discipline réservée aux athlètes les plus aguerris, je me rends rapidement compte que le physique des sportifs ressemble plus à celui de nos voisins qu'à celui d'Usain Bolt. Ici un gars avec bien vingt kilos en trop, là un petit vieux qui trottine, à côté un père de famille qui portent ses enfants. Arrivés sur les lieux en milieu d'après midi, nous assistons en fait à la fin du peloton. Mais tous franchissent la ligne en héros.
 
 L'idée germe discrètement dans ma tête: "Un jour, ça sera moi ..."
 
