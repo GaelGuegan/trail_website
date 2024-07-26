@@ -7,7 +7,7 @@ denivele = ["100m"]
 temps = ["4h43"]
 type = ["route"]
 ville = ["Paris"]
-description = "Les prémices d'une grande aventure"
+description = "Là où tout a commencé"
 +++
 
 
