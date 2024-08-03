@@ -1,0 +1,82 @@
+<script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.umd.min.js"></script>
+<link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.css" rel="stylesheet" />
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+<script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  #map {
+    position: absolute;
+    top: 5%;
+    bottom: 0;
+    width: 100%;
+  }
+  #map2 {
+    position: absolute;
+    bottom: 0;
+    top: 5%;
+    bottom: 0;
+    width: 100%;
+  }
+</style>
+
+<div id="map"></div>
+
+{{ $cities := slice }}
+{{ range site.RegularPages }}
+  {{ range .Params.ville }}
+    {{ $cities = $cities | append . }}
+  {{ end }}
+{{ end }}
+
+<script>
+  cities = {{ $cities }}
+  console.log(cities)
+  mapboxgl.accessToken = 'pk.eyJ1IjoiZ2FqdWJveSIsImEiOiJjbHpkOTRzaDgwa3FlMmpxd2F0ajRjNmhzIn0._RLntWTwPWJA60xDBzi8mQ';
+  
+  const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v12',
+                center: [2.600473, 46.92188],
+                zoom: 5
+            });
+  const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+
+  for (var i = 0; cities.length; i++) {
+   mapboxClient.geocoding
+        .forwardGeocode({
+            query: cities[i] + "&country=fr",
+            autocomplete: false,
+            limit: 1
+        })
+        .send()
+        .then((response) => {
+            if (
+                !response ||
+                !response.body ||
+                !response.body.features ||
+                !response.body.features.length
+            ) {
+                console.error('Invalid response:');
+                console.error(response);
+                return;
+            }
+            const feature = response.body.features[0];
+            const popup = new mapboxgl.Popup().setText(response.body.features[0].text);
+            new mapboxgl.Marker()
+              .setLngLat(feature.center)
+              .setPopup(popup)
+              .addTo(map);
+        });
+        console.log(cities[i])
+      }
+</script>
+
+
+<!-- 
+//       fetch("https://api.maptiler.com/geocoding/Paris.json?key=4krvuNf1Br3ZbQ6oYhEy&country=fr&limit=1")
+//     .then((response) => response.json())
+//     .then((json) => console.log(json.features[0].geometry.coordinates));
+ -->

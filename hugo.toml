@@ -26,7 +26,6 @@ ville = 'villes'
     url = '/carte/'
     weight = 10
 
-
 [params]
   color = 'linen'
   strava = 'gaelguegan'
@@ -34,3 +33,4 @@ ville = 'villes'
   name = 'Gael GUEGAN'
   bio = 'La douleur est éphémère, la fierté est éternelle ...'
   monoDarkIcon = true
+
