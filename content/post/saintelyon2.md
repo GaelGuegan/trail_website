@@ -7,5 +7,5 @@ denivele = ["2200m"]
 temps = ["8h37"]
 type = ["trail"]
 ville = ["Lyon"]
-description = "La neige, ça glisee ..."
+description = "La neige, ça glisse ..."
 +++

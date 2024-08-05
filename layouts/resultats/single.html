@@ -1,4 +1,8 @@
 {{ define "main" }}
+<style>
+  tr:nth-child(even) {background-color: #f2f2f2;}
+</style>
+
 <article> 
   <h1>{{ .Title }}</h1>
   {{ $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
@@ -12,12 +16,12 @@
     </tr>
 	{{ range $pages }}
       <tr>
-        <th> {{ .Date | time.Format ":date_medium" }} </th>
-        <th>{{ .Title }}</th>
-        {{ range .Params.ville }} <th> {{ . }} </th> {{ end }}
-        {{ range .Params.distance }} <th> {{ . }}</th> {{ end }}
-        {{ range .Params.temps }} <th> {{ . }}</th> {{ end }}
-      <tr>
+        <td> {{ .Date | time.Format ":date_medium" }} </td>
+        <td><a href={{ .RelPermalink }} style="text-decoration: none;">{{ .Title }}</a></td>
+        {{ range .Params.ville }} <td> {{ . }} </td> {{ end }}
+        {{ range .Params.distance }} <td> {{ . }}</td> {{ end }}
+        {{ range .Params.temps }} <td> {{ . }}</td> {{ end }}
+      </tr>
   {{ end }}</table>
 </article>
 {{ end }}

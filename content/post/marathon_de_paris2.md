@@ -5,4 +5,5 @@ date = "2021-10-09"
 description = "Courir blessé"
 distance = ["42km"]
 ville = ["Paris"]
+temps = ["4h05"]
 +++

@@ -1,6 +1,6 @@
 +++
 author = "Gael GUEGAN"
-title = "Intégrale des Causses"
+title = "Festival des templiers"
 date = "2023-10-20"
 ville = ["Millau"]
 distance = ["63km"]

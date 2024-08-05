@@ -6,6 +6,6 @@ distance = ["59km"]
 denivele = ["2500m"]
 temps = ["6h43"]
 type = ["trail"]
-ville = ["Andelys"]
+ville = ["Les Andelys"]
 description = "À la one again"
 +++

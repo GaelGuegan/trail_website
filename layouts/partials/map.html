@@ -13,13 +13,16 @@
     bottom: 0;
     width: 100%;
   }
-  #map2 {
-    position: absolute;
-    bottom: 0;
-    top: 5%;
-    bottom: 0;
-    width: 100%;
-  }
+
+  .mapboxgl-popup {
+        max-width: 400px;
+        padding-left: 10px;
+        font:
+            20px 'Helvetica Neue',
+            Arial,
+            Helvetica,
+            sans-serif;
+    }
 </style>
 
 <div id="map"></div>
@@ -33,7 +36,6 @@
 
 <script>
   cities = {{ $cities }}
-  console.log(cities)
   mapboxgl.accessToken = 'pk.eyJ1IjoiZ2FqdWJveSIsImEiOiJjbHpkOTRzaDgwa3FlMmpxd2F0ajRjNmhzIn0._RLntWTwPWJA60xDBzi8mQ';
   
   const map = new mapboxgl.Map({
@@ -47,7 +49,8 @@
   for (var i = 0; cities.length; i++) {
    mapboxClient.geocoding
         .forwardGeocode({
-            query: cities[i] + "&country=fr",
+            query: cities[i],
+            countries: ["fr"],
             autocomplete: false,
             limit: 1
         })

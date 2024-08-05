@@ -1,6 +1,6 @@
 +++
 author = "Gael GUEGAN"
-title = "UT4M Belledonne"
+title = "UT4M - Belledonne"
 date = "2023-07-22"
 ville = ["Grenoble"]
 distance = ["48km"]
