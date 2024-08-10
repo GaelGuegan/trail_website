@@ -8,4 +8,5 @@ temps = ["7h41"]
 type = ["trail"]
 ville = ["Paris"]
 description = "La tour Eiffel"
+strava_id=["10974381738"]
 +++

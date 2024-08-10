@@ -21,6 +21,11 @@
 
   <section>{{ .Content }}</section>
 
+  {{ range .Params.strava_id }}
+  <div class="strava-embed-placeholder" data-embed-type="activity" data-embed-id={{ . }} data-style="standard"></div>
+  <script src="https://strava-embeds.com/embed.js"></script>
+  {{ end }}
+
   <!-- Post Tags -->
   {{ if .Params.tags }}
   <footer class="mt-12 flex flex-wrap">

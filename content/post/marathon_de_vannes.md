@@ -6,4 +6,5 @@ description = "À la one again"
 distance = ["42km"]
 ville = ["Vannes"]
 temps = ["3h19"]
+strava_id=["7971212740"]
 +++

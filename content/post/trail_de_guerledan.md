@@ -8,4 +8,5 @@ denivele = ["2500m"]
 temps = ["7h57"]
 type = ["trail"]
 description = "À la maison"
+strava_id=["9157559855"]
 +++

@@ -13,6 +13,7 @@ denivele = 'deniveles'
 temps = 'temps'
 type = 'types'
 ville = 'villes'
+strava_id = 'strava_ids'
 
 [menu]
   [[menu.main]]
@@ -28,7 +29,7 @@ ville = 'villes'
 
 [params]
   color = 'linen'
-  strava = 'gaelguegan'
+  strava = 'athletes/97656573'
   avatar = 'iguegankergal@hotmail.fr'
   name = 'Gael GUEGAN'
   bio = 'La douleur est éphémère, la fierté est éternelle ...'

@@ -6,4 +6,5 @@ description = "Courir blessé"
 distance = ["42km"]
 ville = ["Paris"]
 temps = ["4h05"]
+strava_id=["6924264243"]
 +++

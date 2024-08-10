@@ -9,3 +9,6 @@ type = ["trail"]
 ville = ["Paris"]
 description = "Le premier trail"
 +++
+
+
+  <div class="strava-embed-placeholder" data-embed-type="activity" data-embed-id="12088813986" data-style="standard"></div>

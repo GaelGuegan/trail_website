@@ -8,4 +8,5 @@ denivele = ["2600m"]
 temps = ["7h46"]
 type = ["trail"]
 description = "Ameno torimen"
+strava_id=["10072188985"]
 +++

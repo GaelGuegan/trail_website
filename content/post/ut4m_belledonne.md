@@ -8,4 +8,5 @@ denivele = ["2900m"]
 temps = ["7h26"]
 type = ["trail"]
 description = "La descente"
+strava_id=["9502095029"]
 +++

@@ -8,4 +8,5 @@ type = ["trail"]
 distance = ["40km"]
 denivele = ["2600m"]
 temps = ["5h42"]
+strava_id=["7520104330"]
 +++

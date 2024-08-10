@@ -8,4 +8,5 @@ denivele = ["3100m"]
 temps = ["8h31"]
 type = ["trail"]
 description = "Tout pour les passerelles"
+strava_id=["11885282135"]
 +++
