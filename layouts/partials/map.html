@@ -1,9 +1,6 @@
-<script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.umd.min.js"></script>
+<script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.umd.js"></script>
 <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.0.3/maptiler-sdk.css" rel="stylesheet" />
-
-<link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
-<script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+<script src="https://cdn.maptiler.com/client-js/v1.8.1/maptiler-client.umd.min.js"></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
@@ -25,6 +22,7 @@
     }
 </style>
 
+<body>
 <div id="map"></div>
 
 {{ $cities := slice }}
@@ -36,50 +34,97 @@
 
 <script>
   cities = {{ $cities }}
-  mapboxgl.accessToken = 'pk.eyJ1IjoiZ2FqdWJveSIsImEiOiJjbHpkOTRzaDgwa3FlMmpxd2F0ajRjNmhzIn0._RLntWTwPWJA60xDBzi8mQ';
-  
-  const map = new mapboxgl.Map({
+  maptilersdk.config.apiKey = 'pyq1aMzL93eonhDwaYmN';
+  maptilerClient.config.apiKey = 'pyq1aMzL93eonhDwaYmN';
+
+  // Initialize map
+  const map = new maptilersdk.Map({
                 container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v12',
+                style: maptilersdk.MapStyle.STREETS,
                 center: [2.600473, 46.92188],
                 zoom: 5
             });
-  const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
 
-  for (var i = 0; cities.length; i++) {
-   mapboxClient.geocoding
-        .forwardGeocode({
-            query: cities[i],
-            countries: ["fr"],
-            autocomplete: false,
-            limit: 1
-        })
-        .send()
-        .then((response) => {
-            if (
-                !response ||
-                !response.body ||
-                !response.body.features ||
-                !response.body.features.length
-            ) {
-                console.error('Invalid response:');
-                console.error(response);
-                return;
+  // Initialize geojson layer
+  var layer = {'type': 'geojson', 'data': {'type': 'FeatureCollection',
+                                           'features': []
+                                          }
+              }
+
+  for (var i = 0; i < cities.length; i++) {
+    const result = maptilerClient.geocoding.forward(
+                        cities[i], {
+                          country: ["fr"],
+                          autocomplete: false,
+                          limit: 1
+                        }
+                  ).then((response) => {
+                      if (
+                          !response ||
+                          !response.features ||
+                          !response.features.length
+                      ) {
+                          console.error('Invalid response:');
+                          console.error(response);
+                          return;
+                      }
+
+                      const feature = response.features[0];
+                      var point = {'type': 'Feature',
+                                    'properties': {'description': ''},
+                                    'geometry': {'type': 'Point',
+                                                'coordinates': []
+                                                }
+                                  }
+
+                      point.properties.description = response.features[0].text;
+                      point.geometry.coordinates = feature.center;
+
+                      layer.data.features.push(point)
+    })
+  }
+
+  map.on('load', async function () {
+      const image = await map.loadImage(
+          'https://docs.maptiler.com/sdk-js/assets/custom_marker.png');
+
+      map.addImage('custom-marker', image.data);
+      map.addSource('places', layer);
+      map.addLayer({
+            'id': 'places',
+            'type': 'symbol',
+            'source': 'places',
+            'layout': {
+                'icon-image': 'custom-marker',
+                'icon-overlap': 'always'
             }
-            const feature = response.body.features[0];
-            const popup = new mapboxgl.Popup().setText(response.body.features[0].text);
-            new mapboxgl.Marker()
-              .setLngLat(feature.center)
-              .setPopup(popup)
-              .addTo(map);
         });
-        console.log(cities[i])
+  });
+
+  // Create a popup, but don't add it to the map yet.
+  var popup = new maptilersdk.Popup({
+      closeButton: false,
+      closeOnClick: false
+  });
+
+  map.on('mouseenter', 'places', function (e) {
+      map.getCanvas().style.cursor = 'pointer';
+      var coordinates = e.features[0].geometry.coordinates.slice();
+      var description = e.features[0].properties.description;
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
       }
+      popup.setLngLat(coordinates).setHTML(description).addTo(map);
+  });
+
+  map.on('mouseleave', 'places', function () {
+      map.getCanvas().style.cursor = '';
+      popup.remove();
+  });
+
+  map.on('click', 'places', function (e) {
+    console.log( e.features[0]);
+  })
+
 </script>
-
-
-<!-- 
-//       fetch("https://api.maptiler.com/geocoding/Paris.json?key=4krvuNf1Br3ZbQ6oYhEy&country=fr&limit=1")
-//     .then((response) => response.json())
-//     .then((json) => console.log(json.features[0].geometry.coordinates));
- -->
+</body>
