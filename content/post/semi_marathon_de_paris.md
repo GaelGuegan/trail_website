@@ -8,11 +8,11 @@ ville = ["Paris"]
 temps = ["1h39"]
 +++
 
-Il a passé maintenant 4 ans depuis mon premier marathon, le défi avait été réalisé et je n'avais plus rien à prouver. J'étais rentrer dans la vie active, premier travail après avoir déménagé dans le sud de la France, moins de temps libre, et un nouveau rytme de vie.
+Il a passé maintenant 4 ans depuis mon premier marathon, le défi avait été réalisé et je n'avais plus rien à prouver. J'étais rentré dans la vie active, premier travail après avoir déménagé dans le sud de la France, moins de temps libre, et un nouveau rytme de vie.
 
 Le temps avait passé et sans le vouloir j'avais emporté un petit gars dans mon défi fou, mon père, et lui il ne s'était jamais arrêté de courir, et il avait même fait son premier marathon un an après le mien.
 
-Alors que père s'était réinscrit au marathon pour 2020, le COVID était passé par là, et il avait vu sa date décalée plusieurs fois due à la pandémie jusqu'à fin 2021. De mon côté j'étais revenu m'installer sur Paris pour travailler. L'occasion était trop belle, je m'inscrit pour participer avec lui.
+Alors que mon père s'était réinscrit au marathon de Paris pour 2020, le COVID était passé par là, et il avait vu sa date décalée plusieurs fois due à la pandémie jusqu'à fin 2021. De mon côté j'étais revenu m'installer sur Paris pour travailler. L'occasion était trop belle, je m'inscrit pour participer avec lui.
 
 C'est dans ce contexte qu'on participa également à notre premier semi marathon ensemble en Septembre 2021.
 
