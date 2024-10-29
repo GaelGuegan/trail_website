@@ -26,14 +26,22 @@
 <div id="map"></div>
 
 {{ $cities := slice }}
+{{ $urls := slice }}
+{{ $distances := slice }}
 {{ range site.RegularPages }}
   {{ range .Params.ville }}
     {{ $cities = $cities | append . }}
   {{ end }}
+  {{ range .Params.distance }}
+    {{ $distances = $distances | append . }}
+  {{ end }}
+  {{ $urls = $urls | append .Permalink }}
 {{ end }}
 
 <script>
   cities = {{ $cities }}
+  urls = {{ $urls }}
+  distances = {{ $distances }}
   maptilersdk.config.apiKey = 'pyq1aMzL93eonhDwaYmN';
   maptilerClient.config.apiKey = 'pyq1aMzL93eonhDwaYmN';
 
@@ -51,37 +59,32 @@
                                           }
               }
 
+  async function searchPlace(url, distance, city) {
+    const result = await maptilerClient.geocoding.forward(city, {
+      country: ["fr"],
+      autocomplete: false,
+      limit: 1
+    });
+    return [url, distance, result];
+  }
+
   for (var i = 0; i < cities.length; i++) {
-    const result = maptilerClient.geocoding.forward(
-                        cities[i], {
-                          country: ["fr"],
-                          autocomplete: false,
-                          limit: 1
-                        }
-                  ).then((response) => {
-                      if (
-                          !response ||
-                          !response.features ||
-                          !response.features.length
-                      ) {
-                          console.error('Invalid response:');
-                          console.error(response);
-                          return;
-                      }
-
-                      const feature = response.features[0];
-                      var point = {'type': 'Feature',
-                                    'properties': {'description': ''},
-                                    'geometry': {'type': 'Point',
-                                                'coordinates': []
-                                                }
-                                  }
-
-                      point.properties.description = response.features[0].text;
-                      point.geometry.coordinates = feature.center;
-
-                      layer.data.features.push(point)
+    const result = searchPlace(urls[i], distances[i], cities[i]).then((response) => {
+      var point = {'type': 'Feature',
+                  'properties': {'description': '',
+                                  'url': '',
+                                  'distance': ''},
+                  'geometry': {'type': 'Point',
+                                'coordinates': []
+                                }
+                  };
+      point.properties.url = response[0];
+      point.properties.distance = response[1];
+      point.properties.description = response[2].features[0].text;
+      point.geometry.coordinates = response[2].features[0].center;
+      layer.data.features.push(point);
     })
+    console.log(result);
   }
 
   map.on('load', async function () {
@@ -111,10 +114,11 @@
       map.getCanvas().style.cursor = 'pointer';
       var coordinates = e.features[0].geometry.coordinates.slice();
       var description = e.features[0].properties.description;
+      var distance = e.features[0].properties.distance;
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
       }
-      popup.setLngLat(coordinates).setHTML(description).addTo(map);
+      popup.setLngLat(coordinates).setHTML('<b>' + description + '</b>' + '<br>' + distance).addTo(map);
   });
 
   map.on('mouseleave', 'places', function () {
@@ -123,7 +127,7 @@
   });
 
   map.on('click', 'places', function (e) {
-    console.log( e.features[0]);
+    window.location.href = e.features[0].properties.url;
   })
 
 </script>
