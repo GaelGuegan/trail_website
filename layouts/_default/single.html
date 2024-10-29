@@ -19,6 +19,9 @@
     {{ end }}
   </header>
 
+
+  {{ partial "follow_path_mapbox.html" . }}
+
   <section>{{ .Content }}</section>
 
   {{ range .Params.strava_id }}
