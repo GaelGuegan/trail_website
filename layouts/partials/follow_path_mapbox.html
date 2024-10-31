@@ -80,8 +80,19 @@ body { margin: 0; padding: 0; }
         });
     });
 
+    var start = 0;
+    var reqId = 0;
+    var out_time = 0;
+    var in_time = 0;
+    var diff = 0;
+
     // wait for the terrain and sky to load before starting animation
-    map.on('load', () => {
+    map.on('mouseover', () => {
+        if (out_time) {
+            in_time = performance.now();
+            diff = in_time - out_time;
+            out_time = 0;
+        }
         const animationDuration = 80000;
         const cameraAltitude = 4000;
         // get the overall distance of each route so we can interpolate along them
@@ -90,10 +101,11 @@ body { margin: 0; padding: 0; }
             turf.lineString(cameraRoute)
         );
 
-        let start;
 
         function frame(time) {
             if (!start) start = time;
+            if (diff)
+                time = time - diff;
             // phase determines how far through the animation we are
             const phase = (time - start) / animationDuration;
 
@@ -138,11 +150,15 @@ body { margin: 0; padding: 0; }
 
             map.setFreeCameraOptions(camera);
 
-            window.requestAnimationFrame(frame);
+            reqId = window.requestAnimationFrame(frame);
         }
 
-        window.requestAnimationFrame(frame);
+        reqId = window.requestAnimationFrame(frame);
     });
+    map.on('mouseout', () => {
+        window.cancelAnimationFrame(reqId);
+        out_time = performance.now();
+     });
 </script>
 
 </body>
