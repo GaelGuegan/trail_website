@@ -3,9 +3,9 @@ author = "Gael GUEGAN"
 title = "Semi Marathon de Paris"
 date = "2021-09-04"
 description = "La renaissance"
-distance = ["21km"]
-ville = ["Paris"]
-temps = ["1h39"]
+distance = "21km"
+ville = "Paris"
+temps = "1h39"
 +++
 
 Il a passé maintenant 4 ans depuis mon premier marathon, le défi avait été réalisé et je n'avais plus rien à prouver. J'étais rentré dans la vie active, premier travail après avoir déménagé dans le sud de la France, moins de temps libre, et un nouveau rytme de vie.

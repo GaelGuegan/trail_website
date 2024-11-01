@@ -2,11 +2,11 @@
 author = "Gael GUEGAN"
 title = "Marathon de Paris"
 date = "2017-04-02"
-distance = ["42km"]
-denivele = ["100m"]
-temps = ["4h43"]
-type = ["route"]
-ville = ["Paris"]
+distance = "42km"
+denivele = "100m"
+temps = "4h43"
+type = "route"
+ville = "Paris"
 description = "Là où tout a commencé"
 +++
 

@@ -12,22 +12,19 @@
       {{ if .Date }}
       <time>{{ .Date | time.Format ":date_medium" }}</time>
       {{ end }}<!---->
-      {{ range .Params.ville }} <span> - {{ . }}</span> {{ end }}
-      {{ range .Params.distance }} <span> - {{ . }}</span> {{ end }}
-      {{ range .Params.temps }} <span> - {{ . }}</span> {{ end }}
+      <span> -  {{ .Params.ville }}</span>
+      <span> - {{ .Params.distance }}</span>
+      <span> - {{ .Params.temps }}</span>
     </div>
     {{ end }}
   </header>
-
 
   {{ partial "follow_path_mapbox.html" . }}
 
   <section>{{ .Content }}</section>
 
-  {{ range .Params.strava_id }}
-  <div class="strava-embed-placeholder" data-embed-type="activity" data-embed-id={{ . }} data-style="standard"></div>
+  <div class="strava-embed-placeholder" data-embed-type="activity" data-embed-id={{ .Params.strava_id }} data-style="standard"></div>
   <script src="https://strava-embeds.com/embed.js"></script>
-  {{ end }}
 
   <!-- Post Tags -->
   {{ if .Params.tags }}
@@ -44,7 +41,7 @@
 
   <!-- Post Nav -->
   {{ if not site.Params.disablePostNavigation }}<!---->
-  {{ $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}<!---->
+  {{ $pages := where site.RegularPages "Params.distance" "!=" nil }}<!---->
   {{ if and (gt (len $pages) 1) (in $pages . ) }}
   <nav class="mt-24 flex rounded-lg bg-black/[3%] text-lg dark:bg-white/[8%]">
     {{ with $pages.Next . }}

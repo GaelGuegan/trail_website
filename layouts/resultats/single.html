@@ -5,7 +5,7 @@
 
 <article> 
   <h1>{{ .Title }}</h1>
-  {{ $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+  {{ $pages := where site.RegularPages "Params.distance" "!=" nil }}
   <table class="table table-striped">
     <tr>
       <th>Date</th>
@@ -18,9 +18,9 @@
       <tr>
         <td> {{ .Date | time.Format ":date_medium" }} </td>
         <td><a href={{ .RelPermalink }} style="text-decoration: none;">{{ .Title }}</a></td>
-        {{ range .Params.ville }} <td> {{ . }} </td> {{ end }}
-        {{ range .Params.distance }} <td> {{ . }}</td> {{ end }}
-        {{ range .Params.temps }} <td> {{ . }}</td> {{ end }}
+        <td> {{ .Params.ville }} </td>
+        <td> {{ .Params.distance }} </td>
+        <td> {{ .Params.temps }} </td>
       </tr>
   {{ end }}</table>
 </article>

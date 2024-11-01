@@ -1,6 +1,6 @@
 +++
 author = "Gael GUEGAN"
 type = "resultats"
-description = "Resultats"
-title = "Resultats"
+description = "Résultats"
+title = "Résultats"
 +++

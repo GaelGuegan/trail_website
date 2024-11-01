@@ -8,7 +8,7 @@
 <!-- $pages -->
 {{ $pages := union .RegularPages .Sections }}<!---->
 {{ if .IsHome }}<!---->
-{{ $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}<!---->
+{{ $pages = where site.RegularPages "Params.distance" "!=" nil }}<!---->
 {{ end }}
 
 <!-- Articles -->
@@ -57,7 +57,9 @@
   <time class="text-sm antialiased opacity-60"
     >{{ .Date | time.Format ":date_medium" }}</time
   >
-  <span class="text-sm antialiased opacity-60">- {{ range .Params.distance }} {{ . }} {{ end }} </span> 
+  <span class="text-sm antialiased opacity-60"
+    >- {{ .Params.distance }} </span
+  >
   <a class="absolute inset-0 text-[0]" href="{{ .Permalink }}">{{ .Title }}</a>
 </section>
 {{ end }}

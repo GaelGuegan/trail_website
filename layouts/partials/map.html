@@ -29,12 +29,8 @@
 {{ $urls := slice }}
 {{ $distances := slice }}
 {{ range site.RegularPages }}
-  {{ range .Params.ville }}
-    {{ $cities = $cities | append . }}
-  {{ end }}
-  {{ range .Params.distance }}
-    {{ $distances = $distances | append . }}
-  {{ end }}
+  {{ $cities = $cities | append .Params.ville }}
+  {{ $distances = $distances | append .Params.distance }}
   {{ $urls = $urls | append .Permalink }}
 {{ end }}
 
