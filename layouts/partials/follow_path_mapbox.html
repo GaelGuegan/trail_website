@@ -13,7 +13,7 @@ body { margin: 0; padding: 0; }
 {{ $gpx := .Params.gpx }}
 {{ $geojson := printf "%s.geojson" (path.BaseName $gpx) }}
 
-<script type="text/javascript" src="/{{ $geojson }}"></script>
+<script src="/{{ $geojson }}"></script>
 <script src="https://docs.mapbox.com/mapbox-gl-js/assets/routes.js"></script>
 <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 <script>
@@ -80,7 +80,7 @@ body { margin: 0; padding: 0; }
             out_time = 0;
         }
         const animationDuration = 100000;
-        const cameraAltitude = 2800;
+        const cameraAltitude = 3000;
         // get the overall distance of each route so we can interpolate along them
         const routeDistance = turf.lineDistance(turf.lineString(targetRoute));
         const cameraRouteDistance = turf.lineDistance(
@@ -126,8 +126,6 @@ body { margin: 0; padding: 0; }
                 },
                 targetRoute[0][2] + cameraAltitude
             );
-
-            console.log(targetRoute[0][2] + cameraAltitude);
 
             // tell the camera to look at a point along the route
             camera.lookAtPoint({
