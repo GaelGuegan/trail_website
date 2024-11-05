@@ -31,21 +31,30 @@ body { margin: 0; padding: 0; }
             const targetRoute = json.features[0].geometry.coordinates;
             const cameraRoute = targetRoute;
 
-            const animationDuration = 100000;
-            const cameraAltitude = 2800;
+            const animationDuration = 100*1000;
+            const cameraAltitude = 1500;
+            const exaggeration = 1.7;
+
             // get the overall distance of each route so we can interpolate along them
             const routeDistance = turf.lineDistance(turf.lineString(targetRoute));
             const cameraRouteDistance = turf.lineDistance(turf.lineString(cameraRoute));
             const middleRoute = turf.along(turf.lineString(targetRoute), routeDistance/2).geometry.coordinates;
+            var elevation = [];
+            for (i = 0; i < targetRoute.length; i++) {
+                elevation.push(targetRoute[i][2]);
+            }
+            const elevationMax = Math.max(...elevation);
+            var polygonGeojson = [...targetRoute];
+            polygonGeojson.push(targetRoute[0]);
+            var boundingBox = turf.bbox(turf.polygon([polygonGeojson]));
 
             const map = new mapboxgl.Map({
                 container: 'map',
-                zoom: 10,
-                center: [middleRoute[0], middleRoute[1]], //[targetRoute[0][0], targetRoute[0][1]],
                 pitch: 30,
                 bearing:30,
                 style: 'mapbox://styles/mapbox/satellite-streets-v12',
-                interactive: false
+                interactive: false,
+                bounds: boundingBox
             });
 
             map.addControl(new mapboxgl.NavigationControl());
@@ -56,9 +65,10 @@ body { margin: 0; padding: 0; }
                     'type': 'raster-dem',
                     'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
                     'tileSize': 512,
-                    'maxzoom': 15
+                    //'maxzoom': 15,
+                    //'minzoom': 14
                 });
-                map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.7 });
+                map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': exaggeration });
                 map.addSource('trace', {
                     type: 'geojson',
                     data: {
@@ -108,7 +118,8 @@ body { margin: 0; padding: 0; }
                         time = time - diff;
                     // phase determines how far through the animation we are
                     const phase = (time - start) / animationDuration;
-
+                    const index = Math.floor(phase * targetRoute.length);
+                    const currentElevation = targetRoute[index][2] * exaggeration + cameraAltitude;
                     // phase is normalized between 0 and 1
                     // when the animation is finished, reset start to loop the animation
                     if (phase > 1) {
@@ -123,7 +134,7 @@ body { margin: 0; padding: 0; }
                     // at roughly equal rates even if they don't contain the same number of points
                     const alongRoute = turf.along(
                         turf.lineString(targetRoute),
-                        routeDistance * phase * 1.1
+                        routeDistance * (phase + 0.01)
                     ).geometry.coordinates;
 
                     const alongCamera = turf.along(
@@ -139,7 +150,7 @@ body { margin: 0; padding: 0; }
                             lng: alongCamera[0],
                             lat: alongCamera[1]
                         },
-                        targetRoute[0][2] + cameraAltitude
+                        currentElevation
                     );
 
                     // tell the camera to look at a point along the route
