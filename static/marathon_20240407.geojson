@@ -1,4 +1,3 @@
-var trace = 
 {
     "type": "FeatureCollection",
     "features": [
@@ -21840,4 +21839,4 @@ var trace =
             }
         }
     ]
-};
+}

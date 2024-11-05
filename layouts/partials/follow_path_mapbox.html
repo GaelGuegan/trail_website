@@ -13,135 +13,159 @@ body { margin: 0; padding: 0; }
 {{ $gpx := .Params.gpx }}
 {{ $geojson := printf "%s.geojson" (path.BaseName $gpx) }}
 
-<script src="/{{ $geojson }}"></script>
 <script src="https://docs.mapbox.com/mapbox-gl-js/assets/routes.js"></script>
 <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 <script>
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiZ2FqdWJveSIsImEiOiJjbHpkOTRzaDgwa3FlMmpxd2F0ajRjNmhzIn0._RLntWTwPWJA60xDBzi8mQ';
-    const targetRoute = trace.features[0].geometry.coordinates;
-    const cameraRoute = targetRoute;
 
-    const map = new mapboxgl.Map({
-        container: 'map',
-        zoom: 11,
-        center: [targetRoute[0][0], targetRoute[0][1]],
-        pitch: 30,
-        bearing:30,
-        style: 'mapbox://styles/mapbox/satellite-streets-v12',
-        interactive: false
-    });
-
-    // add terrain, sky, and line layers once the style has loaded
-    map.on('style.load', () => {
-        map.addSource('mapbox-dem', {
-            'type': 'raster-dem',
-            'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-            'tileSize': 512,
-            'maxzoom': 14
-        });
-        map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.7 });
-        map.addSource('trace', {
-            type: 'geojson',
-            data: {
-                'type': 'Feature',
-                'properties': {},
-                'geometry': {
-                    'type': 'LineString',
-                    'coordinates': targetRoute
-                }
-            }
-        });
-        map.addLayer({
-            type: 'line',
-            source: 'trace',
-            id: 'line',
-            paint: {
-                'line-color': 'yellow',
-                'line-width': 2
-            },
-            layout: {
-                'line-cap': 'round',
-                'line-join': 'round'
-            }
-        });
-    });
-
-    var start = 0;
-    var reqId = 0;
-    var out_time = 0;
-    var in_time = 0;
-    var diff = 0;
-
-    // wait for the terrain and sky to load before starting animation
-    map.on('mouseover', () => {
-        if (out_time) {
-            in_time = performance.now();
-            diff = in_time - out_time;
-            out_time = 0;
-        }
-        const animationDuration = 100000;
-        const cameraAltitude = 3000;
-        // get the overall distance of each route so we can interpolate along them
-        const routeDistance = turf.lineDistance(turf.lineString(targetRoute));
-        const cameraRouteDistance = turf.lineDistance(
-            turf.lineString(cameraRoute)
-        );
-
-        function frame(time) {
-            if (!start) start = time;
-            if (diff)
-                time = time - diff;
-            // phase determines how far through the animation we are
-            const phase = (time - start) / animationDuration;
-
-            // phase is normalized between 0 and 1
-            // when the animation is finished, reset start to loop the animation
-            if (phase > 1) {
-                // wait 1.5 seconds before looping
-                setTimeout(() => {
-                    start = 0.0;
-                }, 1500);
+    async function fetchGeojson(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
             }
 
-            // use the phase to get a point that is the appropriate distance along the route
-            // this approach syncs the camera and route positions ensuring they move
-            // at roughly equal rates even if they don't contain the same number of points
-            const alongRoute = turf.along(
-                turf.lineString(targetRoute),
-                routeDistance * phase * 1.1
-            ).geometry.coordinates;
+            const json = await response.json();
 
-            const alongCamera = turf.along(
-                turf.lineString(cameraRoute),
-                cameraRouteDistance * phase
-            ).geometry.coordinates;
+            const targetRoute = json.features[0].geometry.coordinates;
+            const cameraRoute = targetRoute;
 
-            const camera = map.getFreeCameraOptions();
+            const animationDuration = 100000;
+            const cameraAltitude = 2800;
+            // get the overall distance of each route so we can interpolate along them
+            const routeDistance = turf.lineDistance(turf.lineString(targetRoute));
+            const cameraRouteDistance = turf.lineDistance(turf.lineString(cameraRoute));
+            const middleRoute = turf.along(turf.lineString(targetRoute), routeDistance/2).geometry.coordinates;
 
-            // set the position and altitude of the camera
-            camera.position = mapboxgl.MercatorCoordinate.fromLngLat(
-                {
-                    lng: alongCamera[0],
-                    lat: alongCamera[1]
-                },
-                targetRoute[0][2] + cameraAltitude
-            );
-
-            // tell the camera to look at a point along the route
-            camera.lookAtPoint({
-                lng: alongRoute[0],
-                lat: alongRoute[1]
+            const map = new mapboxgl.Map({
+                container: 'map',
+                zoom: 10,
+                center: [middleRoute[0], middleRoute[1]], //[targetRoute[0][0], targetRoute[0][1]],
+                pitch: 30,
+                bearing:30,
+                style: 'mapbox://styles/mapbox/satellite-streets-v12',
+                interactive: false
             });
 
-            map.setFreeCameraOptions(camera);
+            map.addControl(new mapboxgl.NavigationControl());
 
-            reqId = window.requestAnimationFrame(frame);
+            // add terrain, sky, and line layers once the style has loaded
+            map.on('style.load', () => {
+                map.addSource('mapbox-dem', {
+                    'type': 'raster-dem',
+                    'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+                    'tileSize': 512,
+                    'maxzoom': 15
+                });
+                map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.7 });
+                map.addSource('trace', {
+                    type: 'geojson',
+                    data: {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': targetRoute
+                        }
+                    }
+                });
+                map.addLayer({
+                    type: 'line',
+                    source: 'trace',
+                    id: 'line',
+                    paint: {
+                        'line-color': 'yellow',
+                        'line-width': 2
+                    },
+                    layout: {
+                        'line-cap': 'round',
+                        'line-join': 'round'
+                    }
+                });
+                const marker = new mapboxgl.Marker()
+                                           .setLngLat([targetRoute[0][0], targetRoute[0][1]])
+                                           .addTo(map);
+            });
+
+            var start = 0;
+            var reqId = 0;
+            var out_time = 0;
+            var in_time = 0;
+            var diff = 0;
+
+            // wait for the terrain and sky to load before starting animation
+            map.on('mouseover', () => {
+                if (out_time) {
+                    in_time = performance.now();
+                    diff = diff + in_time - out_time;
+                    out_time = 0;
+                }
+
+                function frame(time) {
+                    if (!start) start = time;
+                    if (diff)
+                        time = time - diff;
+                    // phase determines how far through the animation we are
+                    const phase = (time - start) / animationDuration;
+
+                    // phase is normalized between 0 and 1
+                    // when the animation is finished, reset start to loop the animation
+                    if (phase > 1) {
+                        // wait 1.5 seconds before looping
+                        setTimeout(() => {
+                            start = 0.0;
+                        }, 1500);
+                    }
+
+                    // use the phase to get a point that is the appropriate distance along the route
+                    // this approach syncs the camera and route positions ensuring they move
+                    // at roughly equal rates even if they don't contain the same number of points
+                    const alongRoute = turf.along(
+                        turf.lineString(targetRoute),
+                        routeDistance * phase * 1.1
+                    ).geometry.coordinates;
+
+                    const alongCamera = turf.along(
+                        turf.lineString(cameraRoute),
+                        cameraRouteDistance * phase
+                    ).geometry.coordinates;
+
+                    const camera = map.getFreeCameraOptions();
+
+                    // set the position and altitude of the camera
+                    camera.position = mapboxgl.MercatorCoordinate.fromLngLat(
+                        {
+                            lng: alongCamera[0],
+                            lat: alongCamera[1]
+                        },
+                        targetRoute[0][2] + cameraAltitude
+                    );
+
+                    // tell the camera to look at a point along the route
+                    camera.lookAtPoint({
+                        lng: alongRoute[0],
+                        lat: alongRoute[1]
+                    });
+
+                    map.setFreeCameraOptions(camera);
+
+                    reqId = window.requestAnimationFrame(frame);
+                }
+
+                reqId = window.requestAnimationFrame(frame);
+            });
+            map.on('mouseout', () => {
+                window.cancelAnimationFrame(reqId);
+                out_time = performance.now();
+            });
+
+        } catch (error) {
+            console.error(error.message);
         }
+    }
 
-        reqId = window.requestAnimationFrame(frame);
-    });
-    map.on('mouseout', () => {
-        window.cancelAnimationFrame(reqId);
-        out_time = performance.now();
-     });
+    fetchGeojson("/{{ $geojson }}");
+
+
 </script>
