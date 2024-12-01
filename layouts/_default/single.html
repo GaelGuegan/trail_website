@@ -19,9 +19,9 @@
     {{ end }}
   </header>
 
-  {{ partial "follow_path_mapbox.html" . }}
-
   <section>{{ .Content }}</section>
+
+  <iframe height='454' width='300' frameborder='0' allowtransparency='true' scrolling='no' src='https://www.strava.com/athletes/90732740/latest-rides/48ba2d512c6b3fc58e3969f3ef71c9d9992c7528'></iframe>
 
   <div class="strava-embed-placeholder" data-embed-type="activity" data-embed-id={{ .Params.strava_id }} data-style="standard"></div>
   <script src="https://strava-embeds.com/embed.js"></script>
