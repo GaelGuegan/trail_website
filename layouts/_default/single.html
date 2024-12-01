@@ -19,8 +19,6 @@
     {{ end }}
   </header>
 
-  {{ partial "follow_path_mapbox.html" . }}
-
   <section>{{ .Content }}</section>
 
   <div class="strava-embed-placeholder" data-embed-type="activity" data-embed-id={{ .Params.strava_id }} data-style="standard"></div>
