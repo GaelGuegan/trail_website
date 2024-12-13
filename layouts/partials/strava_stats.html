@@ -1,0 +1,65 @@
+
+<canvas id="simple_chart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    function displayData(all_run){
+        console.log(all_run)
+        distances = all_run.map(run => run.distance / 1000)
+        dates = all_run.map(run => run.start_date_local.split('T')[0]).reverse()
+        const chart = new Chart(document.getElementById('simple_chart'), {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Distance',
+                    data: distances,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'blue',
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+    function getActivities(res){
+        const activities_link = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}`
+        fetch(activities_link)
+            .then((res) => res.json())
+            .then(res => displayData(res))
+    }
+
+    function getAthlete(res){
+        console.log(res)
+        const athlete_link = `https://www.strava.com/api/v3/athlete?access_token=${res.access_token}`
+        fetch(athlete_link)
+            .then((res) => res.json())
+    }
+
+    function reAuthorize(){
+        fetch('https://www.strava.com/oauth/token',{
+            method: 'post',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                client_id: '111857',
+                client_secret: '1bea81534f6536d4afefb08b316765f732f28eee',
+                refresh_token: '21031529dd8900d62c793296a3a8b88d5d5a8f42',
+                grant_type: 'refresh_token'
+            })
+        }).then(res => res.json())
+          .then(res => {getActivities(res)})
+    }
+
+    reAuthorize()
+</script>

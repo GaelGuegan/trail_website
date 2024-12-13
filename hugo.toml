@@ -26,6 +26,11 @@ strava_id = 'strava_ids'
     name = 'Carte'
     url = '/carte/'
     weight = 10
+  [[menu.main]]
+    identifier = 'stats'
+    name = 'Stats'
+    url = '/stats/'
+    weight = 10
 
 [params]
   color = 'linen'
@@ -34,4 +39,3 @@ strava_id = 'strava_ids'
   name = 'Gael GUEGAN'
   bio = 'La douleur est éphémère, la fierté est éternelle ...'
   monoDarkIcon = true
-
