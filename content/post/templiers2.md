@@ -78,3 +78,5 @@ Jusque là je reconnaissais les sentiers, mais cette dernière partie c'était l
 Enfin on entamait la dernière descente, et les jambes se remire à fonctionner à mesure où je redépassait mes concurents. Le petit **passage dans la grotte** (ça je m'en souvenait) c'est le genre de spot sympa aux templiers qui fait son effet.
 
 L'arrivée est comme toujours une **délivrance**. Il y a pas mal de spectateurs sur les côtés, et j'ai l'habilleté de trébucher sur une des marches qui mènent jusqu'à la ligne finale. Je me redresse et entame un semblant de sprint pour finir par mon **petit saut habituelle sous l'arche en bois des templiers**. Ouuuh je suis vraiment rincé ... et j'aperçois Mathieu juste derrière la barrière, c'est cool qu'il soit là. Je m'écroule quelques minutes sur une pierre et fini par rejoindre le ravitaillement pour me substenter et récupérer ma médaille.
+
+{{< figure src="/templiers_20241020_photo6.jpg" width="300px" >}}
