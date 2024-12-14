@@ -18,7 +18,7 @@ strava_id = 'strava_ids'
 [menu]
   [[menu.main]]
     identifier = 'resultats'
-    name = 'Resultats'
+    name = 'Résultats'
     url = '/resultats'
     weight = 10
   [[menu.main]]

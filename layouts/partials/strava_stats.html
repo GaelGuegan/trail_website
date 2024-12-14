@@ -1,40 +1,111 @@
 
-<canvas id="simple_chart"></canvas>
+<canvas id="line_chart"></canvas>
+<canvas id="bar_chart"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
-    function displayData(all_run){
-        console.log(all_run)
-        distances = all_run.map(run => run.distance / 1000)
-        dates = all_run.map(run => run.start_date_local.split('T')[0]).reverse()
-        const chart = new Chart(document.getElementById('simple_chart'), {
-            type: 'line',
-            data: {
-                labels: dates,
-                datasets: [{
-                    label: 'Distance',
-                    data: distances,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'blue',
-                    borderWidth: 1,
-                }]
+    const line_chart = new Chart(document.getElementById('line_chart'), {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Distance',
+                data: [],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'orange',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Distance by Date'
+                }
             },
-            options: {
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+            elements: {
+                point: {
+                    radius: 1,
+                    borderWidth: 3,
+                    borderColor: 'orange',
+                    backgroundColor: 'orange',
+                    hoverRadius: 8,
                 }
             }
-        });
+        }
+    });
+
+    const bar_chart = new Chart(document.getElementById('bar_chart'), {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Distance',
+                data: [],
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Distance by Month'
+                }
+            }
+        }
+    });
+
+    function updateLineChart(all_run){
+        console.log(all_run)
+        //all_run = all_run.reverse()
+        distances = all_run.map(run => run.distance / 1000)
+        dates = all_run.map(run => run.start_date_local.split('T')[0])
+        line_chart.data.labels = dates
+        line_chart.data.datasets[0].data = distances
+        line_chart.update()
+    }
+
+    function updateBarChart(all_run){
+        console.log(all_run)
+        all_run = all_run.reverse()
+        distances = all_run.map(run => run.distance / 1000)
+        dates = all_run.map(run => {
+            const date = new Date(run.start_date_local)
+            return date.getFullYear() + '-' + (date.getMonth() + 1)
+        })
+        console.log(dates)
+        distances_by_month = distances.reduce((acc, distance, index) => {
+            const month = dates[index].split('-')[1]
+            acc[month] = (acc[month] || 0) + distance
+            return acc
+        }, {})
+        console.log(distances_by_month)
+        bar_chart.data.labels = Object.keys(distances_by_month)
+        bar_chart.data.datasets[0].data = Object.values(distances_by_month)
+        bar_chart.update()
     }
 
     function getActivities(res){
-        const activities_link = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}`
-        fetch(activities_link)
+        before_timestamp = new Date('2024-12-13').getTime() / 1000
+        after_timestamp = new Date('2024-01-01').getTime() / 1000
+        const activities_link = `https://www.strava.com/api/v3/athlete/activities?after=${after_timestamp}&before=${before_timestamp}&per_page=200`
+        fetch(activities_link, {
+            method: 'get',
+            headers: {
+                'Authorization': `Bearer ${res.access_token}`
+            }
+        })
             .then((res) => res.json())
-            .then(res => displayData(res))
+            .then(res => {
+                updateBarChart(res); 
+                updateLineChart(res);
+            })
     }
 
     function getAthlete(res){
