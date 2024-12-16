@@ -14,7 +14,7 @@
                 data: [],
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'orange',
-                borderWidth: 1,
+                borderWidth: 2,
             }]
         },
         options: {
@@ -24,7 +24,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Distance by Date'
+                    text: 'Distance by Week'
                 }
             },
             elements: {
@@ -61,9 +61,33 @@
         }
     });
 
-    function updateLineChart(all_run){
-        console.log(all_run)
+    function getWeekNumber(date){
+        const currentDate = date ? date : new Date();
+        const januaryFirst = new Date(currentDate.getFullYear(), 0, 1);
+        const daysToNextMonday = (januaryFirst.getDay() === 1) ? 0 : (7 - januaryFirst.getDay()) % 7;
+        const nextMonday = new Date(currentDate.getFullYear(), 0, januaryFirst.getDate() + daysToNextMonday);
+
+        return (currentDate < nextMonday) ? 52 : (currentDate > nextMonday ? Math.ceil( (currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
+    }
+
+    function updateLineChartByWeek(all_run){
         //all_run = all_run.reverse()
+        distance = all_run.map(run => run.distance / 1000)
+        dates = all_run.map(run => {
+            const date = new Date(run.start_date_local)
+            return date.getFullYear() + '-' + getWeekNumber(date)
+        })
+        distances_by_week = distances.reduce((acc, distance, index) => {
+            const week = dates[index].split('-')[1]
+            acc[week] = (acc[week] || 0) + distance
+            return acc
+        }, {})
+        line_chart.data.labels = Object.keys(distances_by_week)
+        line_chart.data.datasets[0].data = Object.values(distances_by_week)
+        line_chart.update()
+    }
+
+    function updateLineChart(all_run){
         distances = all_run.map(run => run.distance / 1000)
         dates = all_run.map(run => run.start_date_local.split('T')[0])
         line_chart.data.labels = dates
@@ -72,26 +96,23 @@
     }
 
     function updateBarChart(all_run){
-        console.log(all_run)
         all_run = all_run.reverse()
         distances = all_run.map(run => run.distance / 1000)
         dates = all_run.map(run => {
             const date = new Date(run.start_date_local)
             return date.getFullYear() + '-' + (date.getMonth() + 1)
         })
-        console.log(dates)
         distances_by_month = distances.reduce((acc, distance, index) => {
             const month = dates[index].split('-')[1]
             acc[month] = (acc[month] || 0) + distance
             return acc
         }, {})
-        console.log(distances_by_month)
         bar_chart.data.labels = Object.keys(distances_by_month)
         bar_chart.data.datasets[0].data = Object.values(distances_by_month)
         bar_chart.update()
     }
 
-    function getActivities(res){
+    function getActivities(res, type='Run'){
         before_timestamp = new Date('2024-12-13').getTime() / 1000
         after_timestamp = new Date('2024-01-01').getTime() / 1000
         const activities_link = `https://www.strava.com/api/v3/athlete/activities?after=${after_timestamp}&before=${before_timestamp}&per_page=200`
@@ -103,8 +124,9 @@
         })
             .then((res) => res.json())
             .then(res => {
+                res = res.filter(activity => activity.type === type)
                 updateBarChart(res); 
-                updateLineChart(res);
+                updateLineChartByWeek(res);
             })
     }
 
