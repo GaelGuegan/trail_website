@@ -1,65 +1,31 @@
+<h3>{{ .year }}</h3>
 
-<canvas id="line_chart"></canvas>
-<canvas id="bar_chart"></canvas>
+<table class="table table-striped" id="table_{{ .year }}">
+    <tr>
+        <th></th>
+        <th>Nombre</th>
+        <th>Distance (km)</th>
+        <th>Temps (min)</th>
+    </tr>
+    <tr>
+        <td>Moyenne hebdo</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Total annuel</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
+<canvas id="line_chart_{{ .year }}"></canvas>
+<canvas id="bar_chart_{{ .year }}"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-
-    const line_chart = new Chart(document.getElementById('line_chart'), {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Distance',
-                data: [],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'orange',
-                borderWidth: 2,
-            }]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Distance by Week'
-                }
-            },
-            elements: {
-                point: {
-                    radius: 1,
-                    borderWidth: 3,
-                    borderColor: 'orange',
-                    backgroundColor: 'orange',
-                    hoverRadius: 8,
-                }
-            }
-        }
-    });
-
-    const bar_chart = new Chart(document.getElementById('bar_chart'), {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Distance',
-                data: [],
-            }]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Distance by Month'
-                }
-            }
-        }
-    });
 
     function getWeekNumber(date){
         const currentDate = date ? date : new Date();
@@ -70,7 +36,32 @@
         return (currentDate < nextMonday) ? 52 : (currentDate > nextMonday ? Math.ceil( (currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
     }
 
-    function updateLineChartByWeek(all_run){
+    function updateInfo(all_run, table){
+        total_count = all_run.length
+        total_distance = all_run.reduce((acc, run) => acc + run.distance / 1000, 0)
+        total_time = all_run.reduce((acc, run) => acc + run.elapsed_time, 0)
+        total_minutes = total_time % 60;
+        total_hours = Math.floor(total_time / 3600)
+        total_days = Math.floor(total_time / 3600 / 24);
+        formatted_total_time = `${total_days}j ${total_hours}h ${total_minutes}m`;
+
+        avg_distance = Math.round(total_distance / 52)
+        avg_time = Math.round(total_time / 52)
+        console.log(total_time, avg_time)
+        avg_minutes = avg_time % 60;
+        avg_hours = Math.floor(avg_time / 3600);
+        formatted_avg_time = `${avg_hours}h ${avg_minutes}m`;
+
+        table.rows[1].cells[1].innerText = Math.round(total_count / 52)
+        table.rows[1].cells[2].innerText = avg_distance
+        table.rows[1].cells[3].innerText = formatted_avg_time
+
+        table.rows[2].cells[1].innerText = total_count
+        table.rows[2].cells[2].innerText = Math.round(total_distance)
+        table.rows[2].cells[3].innerText = formatted_total_time
+    }
+
+    function updateLineChartByWeek(all_run, chart){
         //all_run = all_run.reverse()
         distance = all_run.map(run => run.distance / 1000)
         dates = all_run.map(run => {
@@ -82,20 +73,13 @@
             acc[week] = (acc[week] || 0) + distance
             return acc
         }, {})
-        line_chart.data.labels = Object.keys(distances_by_week)
-        line_chart.data.datasets[0].data = Object.values(distances_by_week)
-        line_chart.update()
+
+        chart.data.labels = Object.keys(distances_by_week)
+        chart.data.datasets[0].data = Object.values(distances_by_week)
+        chart.update()
     }
 
-    function updateLineChart(all_run){
-        distances = all_run.map(run => run.distance / 1000)
-        dates = all_run.map(run => run.start_date_local.split('T')[0])
-        line_chart.data.labels = dates
-        line_chart.data.datasets[0].data = distances
-        line_chart.update()
-    }
-
-    function updateBarChart(all_run){
+    function updateBarChart(all_run, chart){
         all_run = all_run.reverse()
         distances = all_run.map(run => run.distance / 1000)
         dates = all_run.map(run => {
@@ -107,27 +91,40 @@
             acc[month] = (acc[month] || 0) + distance
             return acc
         }, {})
-        bar_chart.data.labels = Object.keys(distances_by_month)
-        bar_chart.data.datasets[0].data = Object.values(distances_by_month)
-        bar_chart.update()
+
+        chart.data.labels = Object.keys(distances_by_month)
+        chart.data.datasets[0].data = Object.values(distances_by_month)
+        chart.update()
     }
 
-    function getActivities(res, type='Run'){
-        before_timestamp = new Date('2024-12-13').getTime() / 1000
-        after_timestamp = new Date('2024-01-01').getTime() / 1000
-        const activities_link = `https://www.strava.com/api/v3/athlete/activities?after=${after_timestamp}&before=${before_timestamp}&per_page=200`
-        fetch(activities_link, {
+    fetchActivities = (res, after, before) => {
+        const activities_link = `https://www.strava.com/api/v3/athlete/activities?after=${after}&before=${before}&per_page=200`;
+        return fetch(activities_link, {
             method: 'get',
             headers: {
                 'Authorization': `Bearer ${res.access_token}`
             }
-        })
-            .then((res) => res.json())
-            .then(res => {
-                res = res.filter(activity => activity.type === type)
-                updateBarChart(res); 
-                updateLineChartByWeek(res);
-            })
+        }).then(res => res.json())
+    };
+
+    getActivities = async(res, type='Run', year, line_chart, bar_chart, table) => {
+        let allActivities = [];
+        let split = 4;
+        let length = 12 / split;
+        for (let i = 1; i < split; i++) {
+            first_month = i + (i * length) - split + 1
+            second_month = first_month + length
+            before = new Date(year + '-' + second_month + '-31').getTime() / 1000
+            after = new Date(year + '-' + first_month + '-01').getTime() / 1000
+            const activities = await fetchActivities(res, after, before);
+            allActivities = allActivities.concat(activities);
+            updateBarChart(allActivities, bar_chart);
+            updateLineChartByWeek(allActivities, line_chart);
+        }
+        allActivities = allActivities.filter(activity => activity.type === type);
+        updateBarChart(allActivities, bar_chart);
+        updateLineChartByWeek(allActivities, line_chart);
+        updateInfo(allActivities, table);
     }
 
     function getAthlete(res){
@@ -151,7 +148,65 @@
                 grant_type: 'refresh_token'
             })
         }).then(res => res.json())
-          .then(res => {getActivities(res)})
+          .then(res => {
+
+            const line_chart = new Chart(document.getElementById('line_chart_{{ .year }}'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Distance',
+                        data: [],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'orange',
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distance by Week'
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 1,
+                            borderWidth: 3,
+                            borderColor: 'orange',
+                            backgroundColor: 'orange',
+                            hoverRadius: 8,
+                        }
+                    }
+                }
+            });
+            const bar_chart = new Chart(document.getElementById('bar_chart_{{ .year }}'), {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Distance',
+                        data: [],
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distance by Month'
+                        }
+                    }
+                }
+            });
+            var table = document.getElementById('table_{{ .year }}')
+            getActivities(res, 'Run', '{{ .year }}', line_chart, bar_chart, table);
+        })
     }
 
     reAuthorize()
