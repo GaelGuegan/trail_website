@@ -1,11 +1,15 @@
+2024
+<canvas id="line_chart_2024"></canvas>
+<canvas id="bar_chart_2024"></canvas>
 
-<canvas id="line_chart"></canvas>
-<canvas id="bar_chart"></canvas>
+2023
+<canvas id="line_chart_2023"></canvas>
+<canvas id="bar_chart_2023"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
-    const line_chart = new Chart(document.getElementById('line_chart'), {
+    const line_chart_2024 = new Chart(document.getElementById('line_chart_2024'), {
         type: 'line',
         data: {
             labels: [],
@@ -39,7 +43,63 @@
         }
     });
 
-    const bar_chart = new Chart(document.getElementById('bar_chart'), {
+    const bar_chart_2024 = new Chart(document.getElementById('bar_chart_2024'), {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Distance',
+                data: [],
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Distance by Month'
+                }
+            }
+        }
+    });
+
+    const line_chart_2023 = new Chart(document.getElementById('line_chart_2023'), {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Distance',
+                data: [],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'orange',
+                borderWidth: 2,
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Distance by Week'
+                }
+            },
+            elements: {
+                point: {
+                    radius: 1,
+                    borderWidth: 3,
+                    borderColor: 'orange',
+                    backgroundColor: 'orange',
+                    hoverRadius: 8,
+                }
+            }
+        }
+    });
+
+    const bar_chart_2023 = new Chart(document.getElementById('bar_chart_2023'), {
         type: 'bar',
         data: {
             labels: [],
@@ -70,7 +130,7 @@
         return (currentDate < nextMonday) ? 52 : (currentDate > nextMonday ? Math.ceil( (currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
     }
 
-    function updateLineChartByWeek(all_run){
+    function updateLineChartByWeek(all_run, year){
         //all_run = all_run.reverse()
         distance = all_run.map(run => run.distance / 1000)
         dates = all_run.map(run => {
@@ -82,20 +142,19 @@
             acc[week] = (acc[week] || 0) + distance
             return acc
         }, {})
-        line_chart.data.labels = Object.keys(distances_by_week)
-        line_chart.data.datasets[0].data = Object.values(distances_by_week)
-        line_chart.update()
+
+        if (year === '2024') {
+            line_chart_2024.data.labels = Object.keys(distances_by_week)
+            line_chart_2024.data.datasets[0].data = Object.values(distances_by_week)
+            line_chart_2024.update()
+        } else if (year === '2023') {
+            line_chart_2023.data.labels = Object.keys(distances_by_week)
+            line_chart_2023.data.datasets[0].data = Object.values(distances_by_week)
+            line_chart_2023.update()
+        }
     }
 
-    function updateLineChart(all_run){
-        distances = all_run.map(run => run.distance / 1000)
-        dates = all_run.map(run => run.start_date_local.split('T')[0])
-        line_chart.data.labels = dates
-        line_chart.data.datasets[0].data = distances
-        line_chart.update()
-    }
-
-    function updateBarChart(all_run){
+    function updateBarChart(all_run, year){
         all_run = all_run.reverse()
         distances = all_run.map(run => run.distance / 1000)
         dates = all_run.map(run => {
@@ -107,14 +166,20 @@
             acc[month] = (acc[month] || 0) + distance
             return acc
         }, {})
-        bar_chart.data.labels = Object.keys(distances_by_month)
-        bar_chart.data.datasets[0].data = Object.values(distances_by_month)
-        bar_chart.update()
+        if (year === '2024') {
+            bar_chart_2024.data.labels = Object.keys(distances_by_month)
+            bar_chart_2024.data.datasets[0].data = Object.values(distances_by_month)
+            bar_chart_2024.update()
+        } else if (year === '2023') {
+            bar_chart_2023.data.labels = Object.keys(distances_by_month)
+            bar_chart_2023.data.datasets[0].data = Object.values(distances_by_month)
+            bar_chart_2023.update()
+        }
     }
 
-    function getActivities(res, type='Run'){
-        before_timestamp = new Date('2024-12-13').getTime() / 1000
-        after_timestamp = new Date('2024-01-01').getTime() / 1000
+    function getActivities(res, type='Run', year='2024'){
+        before_timestamp = new Date(year + '-12-31').getTime() / 1000
+        after_timestamp = new Date(year + '-01-01').getTime() / 1000
         const activities_link = `https://www.strava.com/api/v3/athlete/activities?after=${after_timestamp}&before=${before_timestamp}&per_page=200`
         fetch(activities_link, {
             method: 'get',
@@ -125,8 +190,10 @@
             .then((res) => res.json())
             .then(res => {
                 res = res.filter(activity => activity.type === type)
-                updateBarChart(res); 
-                updateLineChartByWeek(res);
+                console.log(year)
+                console.log(res)
+                updateBarChart(res, year); 
+                updateLineChartByWeek(res, year);
             })
     }
 
@@ -151,7 +218,10 @@
                 grant_type: 'refresh_token'
             })
         }).then(res => res.json())
-          .then(res => {getActivities(res)})
+          .then(res => {
+            getActivities(res, 'Run', '2024');
+            getActivities(res, 'Run', '2023')
+        })
     }
 
     reAuthorize()
