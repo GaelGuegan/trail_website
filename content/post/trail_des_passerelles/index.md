@@ -25,6 +25,8 @@ C'est à une bonne demi heure de route que se trouve notre petite location perdu
 
 Le lendemain, je dépose les traileurs débutants Olivier et Mathieu au point de départ vers 9h en zigzaguant à vive allure dans les routes de montagne. En revenant avec Samson on se fait un footing, histoire de tater un peu le terrain et que je teste mes **nouveaux super bâtons** avec accroche magnétique. Ensuite douche, et on retourne chercher les autres à l'arrivée. Dommage pour Mathieu il a eu un problème sur son dossard il n'a pas bipé au départ, il a pu se débrouillé pour être quand même classé mais de ce que j'ai compris son temps ne reflète pas la réalité. Retour à l'appart, je prend les choses en main pour faire des tacos au poulet puis dodo avant demain. Malheureusement j'aurai du mal à dormir, stress de course, plus Mathieu qui fait plein de petits bruits étranges avec sa bouche, c'est chiant. Tant pis, c'est comme ça ...
 
+{{< following_gpx >}}
+
 #### Le départ
 
 On se lève aux alentours de 2 heures du matin avec la tête bien dans le cul, et on se prépare rapidement pour que Mathieu nous amène à la navette. Drôle d'ambiance que t'attendre sur le bord d'une route départementale dans le noir accompagné par plusieurs centaines d'autres traileurs. Après 1h de route, nous voici tous arrivés dans la petite commune de La Mûre, où j'arrive à lâcher un petit peu de leste dans les **toilettes sèches** du départ, me vidant par la meme occasion de mon mal de tete et d'estomac acquis pendant le trajet dans le route de montagne.

@@ -1,0 +1,87 @@
+
+<canvas id="race_stats"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    info_json = {}
+    async function loadXML() {
+        //fetch('/user.xml', {
+        fetch('https://corsproxy.io/?url=https://{{ .Page.Params.livetrail }}/coureur.php?rech={{ .Page.Params.dossard }}')
+        .then(response => response.text())
+        .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+        .then(data => {
+            clmt = []
+            tmps = []
+            km = []
+            names = []
+
+            // Get classement and time from passage tag
+            pass = data.getElementsByTagName("pass")
+            for (let i = 0; i < pass[0].childElementCount; i++) {
+                clmt.push(pass[0].children[i].getAttribute('clt'))
+                tmps.push(pass[0].children[i].getAttribute('tps'))
+            }
+
+            // Get km and name from pts tag
+            pts = data.getElementsByTagName("pts")
+            for (let i = 0; i < pts[0].childElementCount; i++) {
+                km.push(Math.round(pts[0].children[i].getAttribute('km')))
+                names.push(pts[0].children[i].getAttribute('n'))
+            }
+
+            for (let i = 0; i < pts[0].childElementCount; i++) {
+                info_json[i] = {
+                    'name': names[i],
+                    'clmt': clmt[i],
+                    'tmps': tmps[i],
+                    'km': km[i]
+                }
+            }
+
+            const chart = new Chart(document.getElementById('race_stats'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Classement',
+                        data: [],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Classement'
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 1,
+                            borderWidth: 3,
+                            borderColor: 'blue',
+                            backgroundColor: 'blue',
+                            hoverRadius: 8,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 2000
+                        }
+                    }
+                }
+            });
+            chart.data.labels = km //names
+            chart.data.datasets[0].data = clmt
+            //chart.data.datasets[1].data = names
+            chart.update()
+        })
+    }
+    loadXML()
+
+</script>

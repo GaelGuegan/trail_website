@@ -9,7 +9,10 @@ temps = "23h12"
 type = "trail"
 description = "Premier ultra"
 strava_id="12235755678"
-gpx = "echappee_belle_20240824.gpx"
+livetrail = "echappeebelle.livetrail.net"
+dossard = "1098"
 +++
 
-{{< following_gpx gpx="echappee_belle_20240824.gpx" >}}
+{{< following_gpx >}}
+
+{{< race_stats >}}

@@ -23,9 +23,11 @@ jobs:
            uses: GaelGuegan/actions-file-deployer@1.0
            with:
                  remote-protocol: "sftp"
-                 remote-host: "gael.guegan.cloud"
+                 remote-host: "guegan.cloud"
                  remote-user: "gael"
+                 remote-port: 22
                  remote-path: "./apps/hugo/trail/public"
                  local-path: "./public/"
                  remote-password: ${{ secrets.ftp_password_my_cloud }}
                  sync: full
+                 debug: true

@@ -9,8 +9,9 @@
   <div id="map"></div>
 </div>
 
-{{ $gpx := .Params.gpx }}
-{{ $geojson := printf "%s.geojson" (path.BaseName $gpx) }}
+{{ $gpx := .Page.Params.gpx }}
+{{ $geojson := .Page.RelPermalink }}
+{{ $geojson := print $geojson "/trace.geojson" }}
 
 <script src="https://docs.mapbox.com/mapbox-gl-js/assets/routes.js"></script>
 <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
@@ -33,6 +34,7 @@
             const animationDuration = 100*1000;
             const cameraAltitude = 1500;
             const exaggeration = 1.7;
+            var speed = 1;
 
             // get the overall distance of each route so we can interpolate along them
             const routeDistance = turf.lineDistance(turf.lineString(targetRoute));
@@ -54,6 +56,11 @@
                 style: 'mapbox://styles/mapbox/satellite-streets-v12',
                 interactive: false,
                 bounds: boundingBox
+            });
+
+            map.on('click', (e) => {
+                console.log(`A click event has occurred at ${e.lngLat}`);
+                speed = speed + 0.5;
             });
 
             map.addControl(new mapboxgl.NavigationControl());
@@ -116,7 +123,7 @@
                     if (diff)
                         time = time - diff;
                     // phase determines how far through the animation we are
-                    const phase = (time - start) / animationDuration;
+                    const phase = speed * (time - start) / animationDuration;
                     const index = Math.floor(phase * targetRoute.length);
                     const currentElevation = targetRoute[index][2] * exaggeration + cameraAltitude;
                     // phase is normalized between 0 and 1
@@ -175,7 +182,7 @@
         }
     }
 
-    fetchGeojson("/{{ $geojson }}");
+    fetchGeojson("{{ $geojson }}");
 
 
 </script>
