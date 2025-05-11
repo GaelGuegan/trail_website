@@ -13,8 +13,8 @@
     var player = new Clappr.Player({
       source: {{ .Get 0 }},
       //mute: false,
-      height: 360,
-      width: 640,
+      height: {{ .Get 2 }}, //360,
+      width: {{ .Get 3 }}, //640,
       autoPlay: true,
     });
   

@@ -48,7 +48,7 @@ Je m'élance tout de même plein d'**insouciance** dans la nuit noire avec mon p
 
 Pas pour longtemps, puisque des bouchons se créent après quelques kilomètres dans des petites "singles" longeant la corniche. Par chance je passe un premier bouchon car le gars a l'intelligence de laisser passer ses poursuivants (dont moi). En continuant dans le noir sur le sentier assez technique je rejoins sans surprise un deuxième bouchon, à ce moment on a une vue incroyable sur la vallée et des **lumières de lampadaires parsemées** eclairent faiblement l'autre flanc de la montagne.
 
-{{< video "/post/templiers2/video1.webm" "my-1" >}}
+{{< video "/post/templiers2/video1.webm" "my-1" "600" "400" >}}
 
 #### Soulagement à Peyreleau
 

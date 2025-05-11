@@ -5,7 +5,9 @@
 
 <article> 
   <h1>{{ .Title }}</h1>
-  {{ $pages := where site.RegularPages "Params.distance" "!=" nil }}
+
+  <h2>Trails</h2>
+  {{ $pages := where site.RegularPages "Params.distance" "not in" "42km 21km 10km" }}
   <table class="table table-striped">
     <tr>
       <th>Date</th>
@@ -22,7 +24,29 @@
         <td> {{ .Params.distance }} </td>
         <td> {{ .Params.temps }} </td>
       </tr>
-  {{ end }}</table>
+  {{ end }}
+  </table>
+
+  <h2>Route</h2>
+  {{ $pages := where site.RegularPages "Params.distance" "in" "42km 21km 10km" }}
+  <table class="table table-striped">
+    <tr>
+      <th>Date</th>
+      <th>Course</th>
+      <th>Ville</th>
+      <th>Distance</th>
+      <th>Temps</th>
+    </tr>
+  {{ range $pages }}
+      <tr>
+        <td> {{ .Date | time.Format ":date_medium" }} </td>
+        <td><a href={{ .RelPermalink }} style="text-decoration: none;">{{ .Title }}</a></td>
+        <td> {{ .Params.ville }} </td>
+        <td> {{ .Params.distance }} </td>
+        <td> {{ .Params.temps }} </td>
+      </tr>
+  {{ end }}
+  </table>
+
 </article>
 {{ end }}
-
