@@ -1,0 +1,17 @@
+image: ubuntu:latest
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  script:
+    - apt-get update && apt-get install -y hugo
+    - hugo --minify
+    - apt-get install -y lftp
+    - lftp -u gael,$FTP_PASSWORD sftp://guegan.cloud:56 -e "mirror --reverse --delete --verbose ./public/ ./apps/hugo/trail/public/; quit"
+  only:
+    - main
+  environment:
+    name: production
+    url: https://guegan.cloud/apps/hugo/trail/public/

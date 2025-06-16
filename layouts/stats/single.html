@@ -3,6 +3,7 @@
   <h1>{{ .Title }}</h1>
   {{ .Content }}
 
+  {{ partial "strava_stats.html" (dict "context" . "year" "2025") }}
   {{ partial "strava_stats.html" (dict "context" . "year" "2024") }}
   {{ partial "strava_stats.html" (dict "context" . "year" "2023") }}
 

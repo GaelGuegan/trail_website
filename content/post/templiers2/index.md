@@ -23,18 +23,24 @@ C'est sur ce format que tout les coureurs élites se rejoignent (la prime est de
 
 #### Départ
 
-Après 10 petites minutes de footing, j'arrive sur la zone de départ où je rejoins directement le premier SAS sans passer par la case toilettes. J'avale rapidement une petite gauffre au chocolat que j'avais emporté avec moi. Et je rappelle papa à qui j'avais raccroché au nez quelques minutes auparavant. Au micro, quelques grands noms du trail sont annoncés comme Blandine L'hirondelle ou Thomas Cardin, ensuite l'organisateur demande un peu de silence et entame un discours des plus émouvant avec quelques rimes, c'est sympa et ça instaure une **ambiance solenelle**. De là, ça enchaine rapidement sur la musique **emblématique de Era: AMENO**. Ça donne quelque chose comme ça:
+Après 10 petites minutes de footing, j'arrive sur la zone de départ où je rejoins directement le premier SAS sans passer par la case toilettes. J'avale rapidement une petite gauffre au chocolat que j'avais emporté avec moi. Et je rappelle papa à qui j'avais raccroché au nez quelques minutes auparavant. Au micro, quelques grands noms du trail sont annoncés comme Blandine L'hirondelle ou Thomas Cardin, ensuite l'organisateur demande un peu de silence et entame un discours des plus émouvant avec quelques rimes, c'est sympa et ça instaure une **ambiance solenelle**.
 
-> Dori me  
-> Interimo, adapare  
-> Dori me  
-> Ameno, Ameno  
-> Latire  
-> Latiremo  
-> Dori me  
+{{< video "/post/templiers2/discours.mp4" "discours" "600" "400" >}}
+
+Ensuite, ça enchaine rapidement sur la musique **emblématique** de Era: AMENO. Ça donne quelque chose comme ça:
+
+> Dori me
+> Interimo, adapare
+> Dori me
+> Ameno, Ameno
+> Latire
+> Latiremo
+> Dori me
 > Ameno...
 
-Et hop, le compte à rebours est lancé au micro, gâchant aussi la musique épique; et la horde de coureurs s'élance aussitôt !
+{{< video "/post/templiers2/depart.mp4" "depart" "600" "400" >}}
+
+Et hop, le compte à rebours est lancé au micro (gâchant la musique épique) et la horde de coureurs s'élance aussitôt !
 
 L'heure de vérité est donc arrivée puisque cela fait une semaine que je suis dans le doute sur mes capacités de course. 7 jours auparavant, j'avais eu la bonne idée de **vriller ma cheville** lors d'un petit footing au bois de Vincennes, rentrant alors en boitant avec mon vélo crevé par la même occasion, **c'était horrible**.
 

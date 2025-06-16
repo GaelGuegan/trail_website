@@ -25,7 +25,7 @@ jobs:
                  remote-protocol: "sftp"
                  remote-host: "guegan.cloud"
                  remote-user: "gael"
-                 remote-port: 22
+                 remote-port: 56
                  remote-path: "./apps/hugo/trail/public"
                  local-path: "./public/"
                  remote-password: ${{ secrets.ftp_password_my_cloud }}
